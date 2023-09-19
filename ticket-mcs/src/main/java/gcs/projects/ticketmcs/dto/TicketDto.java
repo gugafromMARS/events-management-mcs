@@ -19,5 +19,8 @@ public class TicketDto {
 
     private String location;
 
+
+
+
     private LocalDate localDate;
 }

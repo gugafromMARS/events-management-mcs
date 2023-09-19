@@ -6,7 +6,6 @@ public enum TicketStatus {
     SOLD("sold");
 
     private final String status;
-
     TicketStatus(String status) {
         this.status = status;
     }

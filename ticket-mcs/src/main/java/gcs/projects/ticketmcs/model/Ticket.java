@@ -1,6 +1,5 @@
 package gcs.projects.ticketmcs.model;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +29,7 @@ public class Ticket {
     public static TicketBuilder builder() {
         return new TicketBuilder();
     }
+
 
     public static class TicketBuilder {
 
