@@ -23,7 +23,7 @@ public class EventServiceImp implements EventService {
 
     @Override
     public EventDto create(EventCreateDto eventCreateDto){
-        Event existingEvent = eventRepository.findByNameAndLocalDate(eventCreateDto.getName(), eventCreateDto.getLocalDate());
+        Event existingEvent = eventRepository.findByEventCode(eventCreateDto.getEventCode());
         if(existingEvent != null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event already exists");
         }
