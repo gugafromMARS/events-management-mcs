@@ -25,7 +25,8 @@ public class TicketServiceImp {
     private TicketConverter ticketConverter;
 
 //    private RestTemplate restTemplate;
-    private WebClient webClient;
+//    private WebClient webClient;
+    private APIClient apiClient;
 
     public List<TicketDto> getAll(String eventCode){
         return ticketRepository.findAllByEventCode(eventCode).stream()
@@ -44,11 +45,12 @@ public class TicketServiceImp {
 //        EventDto eventDto = responseEntity.getBody();
 
         // Block = sync communication
-        EventDto eventDto = webClient.get()
-                .uri("http://localhost:8081/events/" + eventCode)
-                .retrieve()
-                .bodyToMono(EventDto.class)
-                .block();
+//        EventDto eventDto = webClient.get()
+//                .uri("http://localhost:8081/events/" + eventCode)
+//                .retrieve()
+//                .bodyToMono(EventDto.class)
+//                .block();
+        EventDto eventDto = apiClient.getAnEventByCode(eventCode);
 
         List<TicketDto> ticketDtos = new ArrayList<>();
         for(int i = 0; i < eventDto.getMaxOfTickets(); i++) {
