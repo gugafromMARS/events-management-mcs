@@ -20,11 +20,6 @@ public class TicketController {
         return ResponseEntity.ok(ticketServiceImp.getAll(eventCode));
     }
 
-    @GetMapping ("/{ticketId}")
-    public ResponseEntity<?> getTicket(@PathVariable ("ticketId") Long ticketId){
-        return ResponseEntity.ok(ticketServiceImp.getById(ticketId));
-    }
-
     @PostMapping("/{eventCode}")
     public ResponseEntity<?> createTickets(@PathVariable ("eventCode") String eventCode){
         return new ResponseEntity<>(ticketServiceImp.create(eventCode), HttpStatus.CREATED);

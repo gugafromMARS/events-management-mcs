@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -23,7 +24,8 @@ public class TicketServiceImp {
 
     private TicketConverter ticketConverter;
 
-    private RestTemplate restTemplate;
+//    private RestTemplate restTemplate;
+    private WebClient webClient;
 
     public List<TicketDto> getAll(String eventCode){
         return ticketRepository.findAllByEventCode(eventCode).stream()
@@ -37,9 +39,16 @@ public class TicketServiceImp {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket for this event already exists");
         }
 
-        ResponseEntity<EventDto> responseEntity = restTemplate.getForEntity("http://localhost:8081/events/" + eventCode, EventDto.class);
+//        ResponseEntity<EventDto> responseEntity = restTemplate.getForEntity("http://localhost:8081/events/" + eventCode, EventDto.class);
+//
+//        EventDto eventDto = responseEntity.getBody();
 
-        EventDto eventDto = responseEntity.getBody();
+        // Block = sync communication
+        EventDto eventDto = webClient.get()
+                .uri("http://localhost:8081/events/" + eventCode)
+                .retrieve()
+                .bodyToMono(EventDto.class)
+                .block();
 
         List<TicketDto> ticketDtos = new ArrayList<>();
         for(int i = 0; i < eventDto.getMaxOfTickets(); i++) {
@@ -50,10 +59,4 @@ public class TicketServiceImp {
         return ticketDtos;
     }
 
-    public TicketDto getById(Long ticketId) {
-        return ticketRepository.findById(ticketId).stream()
-                .map(ticket -> ticketConverter.toDto(ticket))
-                .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found"));
-    }
 }
