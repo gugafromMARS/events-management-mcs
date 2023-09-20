@@ -12,7 +12,5 @@ public class TicketHubCreateDto {
 
     private String name;
 
-
-
     private String email;
 }
