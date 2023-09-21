@@ -1,6 +1,7 @@
 package gsc.projects.tickehubmcs.model;
 
 
+import gsc.projects.tickehubmcs.dto.TicketDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,9 +26,6 @@ public class TicketHub {
 
     private String email;
 
-    private int maxOfTickets;
-
-    private int currentNumOfTickets;
 
     public static TicketHubBuilder builder() {
         return new TicketHubBuilder();

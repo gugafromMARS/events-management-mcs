@@ -1,16 +1,11 @@
-package gcs.projects.ticketmcs.dto;
+package gsc.projects.tickehubmcs.dto;
 
-
-import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
 
 @Getter
-@Setter
-@Builder
 public class TicketDto {
 
     private Long id;

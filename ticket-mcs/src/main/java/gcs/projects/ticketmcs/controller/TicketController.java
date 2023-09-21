@@ -1,6 +1,7 @@
 package gcs.projects.ticketmcs.controller;
 
 
+import gcs.projects.ticketmcs.dto.CreateTicketDto;
 import gcs.projects.ticketmcs.dto.EventDto;
 import gcs.projects.ticketmcs.service.TicketServiceImp;
 import lombok.AllArgsConstructor;
@@ -16,12 +17,12 @@ public class TicketController {
     private TicketServiceImp ticketServiceImp;
 
     @GetMapping ("/{eventCode}")
-    public ResponseEntity<?> getAllTickets(@PathVariable ("eventCode") String eventCode){
-        return ResponseEntity.ok(ticketServiceImp.getAll(eventCode));
+    public ResponseEntity<?> getTicket(@PathVariable ("eventCode") String eventCode){
+        return ResponseEntity.ok(ticketServiceImp.getAvailableTicket(eventCode));
     }
 
-    @PostMapping("/{eventCode}")
-    public ResponseEntity<?> createTickets(@PathVariable ("eventCode") String eventCode){
-        return new ResponseEntity<>(ticketServiceImp.create(eventCode), HttpStatus.CREATED);
+    @PostMapping()
+    public ResponseEntity<?> createTickets(@RequestBody CreateTicketDto createTicketDto){
+        return new ResponseEntity<>(ticketServiceImp.create(createTicketDto), HttpStatus.CREATED);
     }
 }
