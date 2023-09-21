@@ -1,6 +1,5 @@
 package gsc.projects.usersmcs.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

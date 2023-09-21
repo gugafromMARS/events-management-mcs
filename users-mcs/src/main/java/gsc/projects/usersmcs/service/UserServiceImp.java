@@ -1,8 +1,10 @@
 package gsc.projects.usersmcs.service;
 
 import gsc.projects.usersmcs.converter.UserConverter;
+import gsc.projects.usersmcs.dto.BuyTicketDto;
 import gsc.projects.usersmcs.dto.UserCreateDto;
 import gsc.projects.usersmcs.dto.UserDto;
+import gsc.projects.usersmcs.dto.UserTicketsDto;
 import gsc.projects.usersmcs.model.User;
 import gsc.projects.usersmcs.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -19,6 +21,8 @@ public class UserServiceImp implements UserService {
     private UserRepository userRepository;
 
     private UserConverter userConverter;
+
+    private APIClient apiClient;
 
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
@@ -44,4 +48,10 @@ public class UserServiceImp implements UserService {
     }
 
 
+    public UserTicketsDto buyTicketByUserId(Long userId, BuyTicketDto buyTicketDto) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        UserTicketsDto userTicketsDto = apiClient.buy(buyTicketDto.getTicketHubId(), buyTicketDto.getEventCode(), existingUser.getId());
+        return userTicketsDto;
+    }
 }
