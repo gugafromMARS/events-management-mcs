@@ -29,9 +29,11 @@ public class TicketHubController {
         return new ResponseEntity<>(ticketHubServiceImp.create(ticketHubCreateDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{ticketHubId}/buy/{eventCode}")
-    public ResponseEntity<?> buy(@PathVariable ("ticketHubId") Long ticketHubId, @PathVariable ("eventCode") String eventCode){
-        return ResponseEntity.ok(ticketHubServiceImp.buyTicket(ticketHubId, eventCode));
+    @GetMapping("/{ticketHubId}/buy/{eventCode}/{userId}")
+    public ResponseEntity<?> buy(@PathVariable ("ticketHubId") Long ticketHubId,
+                                 @PathVariable ("eventCode") String eventCode,
+                                 @PathVariable ("userId") Long userId){
+        return ResponseEntity.ok(ticketHubServiceImp.buyTicket(ticketHubId, eventCode, userId));
     }
 
 
