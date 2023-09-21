@@ -1,6 +1,7 @@
 package gsc.projects.tickehubmcs.service;
 
 import gsc.projects.tickehubmcs.converter.TicketHubConverter;
+import gsc.projects.tickehubmcs.dto.TicketDto;
 import gsc.projects.tickehubmcs.dto.TicketHubCreateDto;
 import gsc.projects.tickehubmcs.dto.TicketHubDto;
 import gsc.projects.tickehubmcs.model.TicketHub;
@@ -21,6 +22,7 @@ public class TicketHubServiceImp {
 
     private TicketHubConverter ticketHubConverter;
 
+    private APIClient apiClient;
 
     public List<TicketHubDto> getAllTicketHubs() {
         return ticketHubRepository.findAll().stream()
@@ -42,5 +44,16 @@ public class TicketHubServiceImp {
         TicketHub newTicketHub = ticketHubConverter.fromCreateDto(ticketHubCreateDto);
         ticketHubRepository.save(newTicketHub);
         return ticketHubConverter.toDto(newTicketHub);
+    }
+
+    public TicketDto buyTicket(Long ticketHubId, String eventCode) {
+        TicketHub existingTicketHub = ticketHubRepository.findById(ticketHubId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Ticket Hub not found"));
+
+        TicketDto ticketDto = apiClient.getTicket(eventCode);
+        if(ticketDto == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket sold out");
+        }
+        return ticketDto;
     }
 }

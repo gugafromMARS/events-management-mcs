@@ -1,9 +1,11 @@
 package gcs.projects.ticketmcs.service;
 
 import gcs.projects.ticketmcs.converter.TicketConverter;
+import gcs.projects.ticketmcs.dto.CreateTicketDto;
 import gcs.projects.ticketmcs.dto.EventDto;
 import gcs.projects.ticketmcs.dto.TicketDto;
 import gcs.projects.ticketmcs.model.Ticket;
+import gcs.projects.ticketmcs.model.TicketStatus;
 import gcs.projects.ticketmcs.repository.TicketRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,33 +26,27 @@ public class TicketServiceImp {
 
     private TicketConverter ticketConverter;
 
-//    private RestTemplate restTemplate;
-//    private WebClient webClient;
+
     private APIClient apiClient;
 
-    public List<TicketDto> getAll(String eventCode){
-        return ticketRepository.findAllByEventCode(eventCode).stream()
-                .map(ticket -> ticketConverter.toDto(ticket))
-                .toList();
+    public TicketDto getAvailableTicket(String eventCode){
+        List<Ticket> tickets = ticketRepository.findByEventCodeAndStatus(eventCode, TicketStatus.AVAILABLE);
+        if(tickets.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tickets sold out");
+        }
+        Ticket availableTicket = tickets.get(0);
+        availableTicket.setStatus(TicketStatus.SOLD);
+        ticketRepository.save(availableTicket);
+        return ticketConverter.toDto(availableTicket);
     }
-    public List<TicketDto> create(String eventCode){
-        Ticket existingTicket = ticketRepository.findByEventCode(eventCode);
+    public List<TicketDto> create(CreateTicketDto createTicketDto){
+        Ticket existingTicket = ticketRepository.findByEventCode(createTicketDto.getEventCode());
 
         if(existingTicket != null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket for this event already exists");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tickets for this event already exists");
         }
 
-//        ResponseEntity<EventDto> responseEntity = restTemplate.getForEntity("http://localhost:8081/events/" + eventCode, EventDto.class);
-//
-//        EventDto eventDto = responseEntity.getBody();
-
-        // Block = sync communication
-//        EventDto eventDto = webClient.get()
-//                .uri("http://localhost:8081/events/" + eventCode)
-//                .retrieve()
-//                .bodyToMono(EventDto.class)
-//                .block();
-        EventDto eventDto = apiClient.getAnEventByCode(eventCode);
+        EventDto eventDto = apiClient.getAnEventByCode(createTicketDto.getEventCode());
 
         List<TicketDto> ticketDtos = new ArrayList<>();
         for(int i = 0; i < eventDto.getMaxOfTickets(); i++) {
