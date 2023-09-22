@@ -10,12 +10,14 @@
         <module name="events-mcs" />
         <module name="users-mcs" />
         <module name="ticket-mcs" />
+        <module name="service-registry-mcs" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="events-mcs" options="-parameters" />
+      <module name="service-registry-mcs" options="-parameters" />
       <module name="tickehub-mcs" options="-parameters" />
       <module name="ticket-mcs" options="-parameters" />
       <module name="users-mcs" options="-parameters" />
