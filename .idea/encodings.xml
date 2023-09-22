@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/events-mcs/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/events-mcs/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-registry-mcs/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tickehub-mcs/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tickehub-mcs/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ticket-mcs/src/main/java" charset="UTF-8" />
