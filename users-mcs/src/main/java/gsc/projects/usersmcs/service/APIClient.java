@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@FeignClient(url = "http://localhost:8082", value = "TICKETHUB-SERVICE")
+@FeignClient(name = "TICKETHUB-SERVICE")
 public interface APIClient {
 
     @GetMapping ("/tickethub/{ticketHubId}/buy/{eventCode}/{userId}")

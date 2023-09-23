@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@FeignClient(url = "http://localhost:8081", value ="EVENT-SERVICE")
+@FeignClient(name = "EVENTS-SERVICE")
 public interface APIClient {
 
     @GetMapping("/events/{eventCode}")
