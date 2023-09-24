@@ -29,20 +29,13 @@ In this app you have several options :
 
 * **Create**
 
-  Create a patient, create a diabetic details from patient, create register from patient, create a doctor and create a appointment from doctor.
-* **Delete**
-
-  Delete a patient, doctor, or a register.
-* **Update**
-
-  Patient info, doctor info, register info or appointment info too.
-* **Register**
+  You can create a Event, tickets for the event, a tickethub who going to sells the tickets for users, and create Users.
 
   In this api you can register your glucose, and the total of carbohydrates in grams you going to eat, and the app is going to calculate the insulin indice you put on your diabetic details and calculate the total of insulin you need to give!
 * **Get**
 
-  If you are a patient you can get all your appointments and all your registers, or if you are a doctor you can see all your appointments too. You can even get your average glucose and insulin from your registers between dates.
-
+ Get the all events available, get event by id and get ticket if avaliable.
+ 
 ## Authors
 
 **gugafromMars**
