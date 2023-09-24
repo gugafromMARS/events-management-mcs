@@ -2,7 +2,7 @@
 
 ![Logo](https://www.moretimepa.co.uk/wp-content/uploads/shutterstock_378811030.jpg)
 
-Welcome to my events management app, this is an app with microservices architecture, with open feign communication, eureka server for service registry with load balancer and api gateway.
+Welcome to my events management backend app, this is an app with microservices architecture, with open feign communication, eureka server for service registry with load balancer and api gateway.
 
 
 ## Architecture
