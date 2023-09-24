@@ -34,7 +34,7 @@ In this app you have several options :
   In this api you can register your glucose, and the total of carbohydrates in grams you going to eat, and the app is going to calculate the insulin indice you put on your diabetic details and calculate the total of insulin you need to give!
 * **Get**
 
- Get the all events available, get event by id and get ticket if avaliable.
+  Get the all events available, get event by id and get ticket if avaliable.
  
 ## Authors
 
