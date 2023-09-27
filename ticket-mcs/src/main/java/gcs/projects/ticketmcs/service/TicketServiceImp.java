@@ -81,7 +81,6 @@ public class TicketServiceImp {
         List<TicketDto> ticketDtos = new ArrayList<>();
         for(int i = 0; i < eventDto.getMaxOfTickets(); i++) {
             Ticket newTicket = ticketConverter.fromCreateDto(eventDto);
-            ticketRepository.save(newTicket);
             ticketDtos.add(ticketConverter.toDto(newTicket));
         }
         return ticketDtos;
