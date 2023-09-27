@@ -8,7 +8,10 @@ import gsc.projects.tickehubmcs.model.UserTickets;
 import gsc.projects.tickehubmcs.repository.TicketHubRepository;
 import gsc.projects.tickehubmcs.repository.UserTicketsRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -28,6 +31,8 @@ public class TicketHubServiceImp {
     private APITicket apiTicket;
 
     private APIUser apiUser;
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(TicketHubServiceImp.class);
 
     private UserTicketsConverter userTicketsConverter;
     private final UserTicketsRepository userTicketsRepository;
@@ -54,9 +59,11 @@ public class TicketHubServiceImp {
         return ticketHubConverter.toDto(newTicketHub);
     }
 
-    @CircuitBreaker(name = "${spring.application.name}", fallbackMethod = "getDefaultUserTickets")
+//    @CircuitBreaker(name = "${spring.application.name}", fallbackMethod = "getDefaultUserTickets")
+    @Retry(name = "${spring.application.name}", fallbackMethod = "getDefaultUserTickets")
     public UserTicketsDto buyTicket(Long ticketHubId, String eventCode, Long userId) {
 
+        LOGGER.info("inside buyTicket method");
         TicketHub existingTicketHub = ticketHubRepository.findById(ticketHubId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Ticket Hub not found"));
 
@@ -77,6 +84,9 @@ public class TicketHubServiceImp {
     }
 
     public UserTicketsDto getDefaultUserTickets(Long ticketHubId, String eventCode, Long userId, Exception exception) {
+
+        LOGGER.info("inside getDefaultUserTickets method");
+
         TicketHub existingTicketHub = ticketHubRepository.findById(ticketHubId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Ticket Hub not found"));
 
