@@ -8,7 +8,10 @@ import gcs.projects.ticketmcs.model.Ticket;
 import gcs.projects.ticketmcs.model.TicketStatus;
 import gcs.projects.ticketmcs.repository.TicketRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,8 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class TicketServiceImp {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TicketServiceImp.class);
 
     private TicketRepository ticketRepository;
 
@@ -43,9 +48,11 @@ public class TicketServiceImp {
     }
 
 
-    @CircuitBreaker(name = "${spring.application.name}", fallbackMethod = "getDefaultEvent")
+    //@CircuitBreaker(name = "${spring.application.name}", fallbackMethod = "getDefaultEvent")
+    @Retry(name = "${spring.application.name}", fallbackMethod = "getDefaultEvent")
     public List<TicketDto> create(CreateTicketDto createTicketDto){
 
+        LOGGER.info("inside create method");
         List<Ticket> existingTickets = ticketRepository.findByEventCode(createTicketDto.getEventCode());
 
         if(existingTickets.size() != 0){
@@ -66,6 +73,7 @@ public class TicketServiceImp {
     public List<TicketDto> getDefaultEvent(CreateTicketDto createTicketDto, Exception exception){
         List<Ticket> existingTickets = ticketRepository.findByEventCode(createTicketDto.getEventCode());
 
+        LOGGER.info("inside getDefaultEvent method");
         if(existingTickets.size() != 0){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tickets for this event already exists");
         }

@@ -9,6 +9,8 @@ import gsc.projects.usersmcs.model.User;
 import gsc.projects.usersmcs.repository.UserRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,6 +27,8 @@ public class UserServiceImp implements UserService {
     private UserConverter userConverter;
 
     private APIClient apiClient;
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(UserServiceImp.class);
 
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
@@ -52,6 +56,9 @@ public class UserServiceImp implements UserService {
 
     @CircuitBreaker(name = "${spring.application.name}", fallbackMethod = "getDefaultUserTickets")
     public UserTicketsDto buyTicketByUserId(Long userId, BuyTicketDto buyTicketDto) {
+
+        LOGGER.info("inside buyTicketByUserId method");
+
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         UserTicketsDto userTicketsDto = apiClient.buy(buyTicketDto.getTicketHubId(), buyTicketDto.getEventCode(), existingUser.getId());
@@ -59,6 +66,9 @@ public class UserServiceImp implements UserService {
     }
 
     public UserTicketsDto getDefaultUserTickets(Long userId, BuyTicketDto buyTicketDto, Exception exception){
+
+        LOGGER.info("inside getDefaultUserTickets method");
+
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
