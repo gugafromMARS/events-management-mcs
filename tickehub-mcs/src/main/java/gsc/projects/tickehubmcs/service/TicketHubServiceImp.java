@@ -7,11 +7,13 @@ import gsc.projects.tickehubmcs.model.TicketHub;
 import gsc.projects.tickehubmcs.model.UserTickets;
 import gsc.projects.tickehubmcs.repository.TicketHubRepository;
 import gsc.projects.tickehubmcs.repository.UserTicketsRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -52,6 +54,7 @@ public class TicketHubServiceImp {
         return ticketHubConverter.toDto(newTicketHub);
     }
 
+    @CircuitBreaker(name = "${spring.application.name}", fallbackMethod = "getDefaultUserTickets")
     public UserTicketsDto buyTicket(Long ticketHubId, String eventCode, Long userId) {
 
         TicketHub existingTicketHub = ticketHubRepository.findById(ticketHubId)
@@ -60,6 +63,7 @@ public class TicketHubServiceImp {
         TicketDto ticketDto = apiTicket.getTicket(eventCode);
 
         UserDto userDto = apiUser.getUserById(userId);
+
         if(userDto == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
@@ -69,6 +73,23 @@ public class TicketHubServiceImp {
 
         UserTickets userTickets = userTicketsConverter.fromTicketHubDtoTicketDtoUserDto(existingTicketHub, ticketDto, userDto);
         userTicketsRepository.save(userTickets);
+        return userTicketsConverter.toDto(userTickets);
+    }
+
+    public UserTicketsDto getDefaultUserTickets(Long ticketHubId, String eventCode, Long userId, Exception exception) {
+        TicketHub existingTicketHub = ticketHubRepository.findById(ticketHubId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Ticket Hub not found"));
+
+        TicketDto ticketDto = new TicketDto();
+        ticketDto.setEventCode("DefaultEventCode");
+        ticketDto.setLocation("DefaultLocation");
+        ticketDto.setLocalDate(LocalDate.parse("2023-12-31"));
+
+        UserDto userDto = new UserDto();
+        userDto.setName("DefaultName");
+        userDto.setEmail("DefaultEmail@default.com");
+
+        UserTickets userTickets = userTicketsConverter.fromTicketHubDtoTicketDtoUserDto(existingTicketHub, ticketDto, userDto);
         return userTicketsConverter.toDto(userTickets);
     }
 }
