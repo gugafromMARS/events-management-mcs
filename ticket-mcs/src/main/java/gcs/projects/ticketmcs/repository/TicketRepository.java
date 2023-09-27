@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
-    Ticket findByEventCode(String eventCode);
+    List<Ticket> findByEventCode(String eventCode);
     List<Ticket> findByEventCodeAndStatus(String eventCode, TicketStatus ticketStatus);
 }
