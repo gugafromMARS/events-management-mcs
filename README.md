@@ -56,12 +56,15 @@ In this app you have several options :
 
 * **Create**
 
-  You can create an Event, tickets for the event, a ticket hub who going to sells the tickets for users, and create Users.
+  You can create an event, create tickets for the event, create a ticket hub who going to sells the tickets for users, and create users.
 
-  In this api you can register your glucose, and the total of carbohydrates in grams you are going to eat, and the app is going to calculate the insulin indices you put on your diabetic details and calculate the total of insulin you need to give!
 * **Get**
 
-  Get the all events available, get event by id and get ticket if available.
+  Get the all events available, get event by id and get user by id.
+
+* **Buy**
+  
+  User can buy ticket for a expecific event if still are tickets available for sale.
  
 ## Authors
 
