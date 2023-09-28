@@ -25,7 +25,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class TicketServiceImp {
+public class TicketServiceImp implements TicketService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TicketServiceImp.class);
 
@@ -36,6 +36,7 @@ public class TicketServiceImp {
 
     private APIClient apiClient;
 
+    @Override
     public TicketDto getAvailableTicket(String eventCode){
         List<Ticket> tickets = ticketRepository.findByEventCodeAndStatus(eventCode, TicketStatus.AVAILABLE);
         if(tickets.isEmpty()){
@@ -49,6 +50,7 @@ public class TicketServiceImp {
 
 
     //@CircuitBreaker(name = "${spring.application.name}", fallbackMethod = "getDefaultEvent")
+    @Override
     @Retry(name = "${spring.application.name}", fallbackMethod = "getDefaultEvent")
     public List<TicketDto> create(CreateTicketDto createTicketDto){
 
@@ -70,6 +72,7 @@ public class TicketServiceImp {
         return ticketDtos;
     }
 
+    @Override
     public List<TicketDto> getDefaultEvent(CreateTicketDto createTicketDto, Exception exception){
         List<Ticket> existingTickets = ticketRepository.findByEventCode(createTicketDto.getEventCode());
 

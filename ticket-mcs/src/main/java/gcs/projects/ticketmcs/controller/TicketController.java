@@ -2,8 +2,7 @@ package gcs.projects.ticketmcs.controller;
 
 
 import gcs.projects.ticketmcs.dto.CreateTicketDto;
-import gcs.projects.ticketmcs.dto.EventDto;
-import gcs.projects.ticketmcs.service.TicketServiceImp;
+import gcs.projects.ticketmcs.service.TicketService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class TicketController {
 
-    private TicketServiceImp ticketServiceImp;
+    private TicketService ticketService;
 
     @GetMapping ("/{eventCode}")
     public ResponseEntity<?> getTicket(@PathVariable ("eventCode") String eventCode){
-        return ResponseEntity.ok(ticketServiceImp.getAvailableTicket(eventCode));
+        return ResponseEntity.ok(ticketService.getAvailableTicket(eventCode));
     }
 
     @PostMapping()
     public ResponseEntity<?> createTickets(@RequestBody CreateTicketDto createTicketDto){
-        return new ResponseEntity<>(ticketServiceImp.create(createTicketDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(ticketService.create(createTicketDto), HttpStatus.CREATED);
     }
 }
