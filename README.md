@@ -7,7 +7,8 @@ This app allow to create an event, create tickets for that event, create a ticke
 
 ## Architecture
 
-![ArchitectureImg](https://github.com/gugafromMARS/events-management-mcs/assets/116969206/65adf39b-a374-49e8-a3b8-848efad0e8ea)
+![ArchitectureImg](https://github.com/gugafromMARS/events-management-mcs/assets/116969206/77981e87-0fae-49c6-8edc-e9ccf64a0225)
+
 
 
 ## Technology
