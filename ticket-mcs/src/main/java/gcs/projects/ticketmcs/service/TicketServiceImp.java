@@ -4,6 +4,7 @@ import gcs.projects.ticketmcs.converter.TicketConverter;
 import gcs.projects.ticketmcs.dto.CreateTicketDto;
 import gcs.projects.ticketmcs.dto.EventDto;
 import gcs.projects.ticketmcs.dto.TicketDto;
+import gcs.projects.ticketmcs.dto.TicketUpdateDto;
 import gcs.projects.ticketmcs.model.Ticket;
 import gcs.projects.ticketmcs.model.TicketStatus;
 import gcs.projects.ticketmcs.repository.TicketRepository;
@@ -95,6 +96,22 @@ public class TicketServiceImp implements TicketService {
             ticketDtos.add(ticketConverter.toDto(newTicket));
         }
         return ticketDtos;
+    }
+
+    @Override
+    public List<TicketDto> updateTicket(String eventCode, TicketUpdateDto ticketUpdateDto) {
+        List<Ticket> existingTickets = ticketRepository.findByEventCode(eventCode);
+
+        if(existingTickets.size() == 0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tickets for that event don't exist");
+        }
+
+        for(Ticket ticket : existingTickets){
+            ticket.setLocalDate(ticketUpdateDto.getLocalDate());
+            ticketRepository.save(ticket);
+        }
+
+        return ticketConverter.ticketDtoList(existingTickets);
     }
 
 }

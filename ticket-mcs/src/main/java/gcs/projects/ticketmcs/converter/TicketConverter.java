@@ -7,8 +7,22 @@ import gcs.projects.ticketmcs.model.TicketStatus;
 import jakarta.persistence.Column;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class TicketConverter {
+
+
+    public List<TicketDto> ticketDtoList(List<Ticket> ticketList){
+        List<TicketDto> ticketsDto = new ArrayList<>();
+
+        for(Ticket ticket : ticketList){
+            TicketDto ticketDto = toDto(ticket);
+            ticketsDto.add(ticketDto);
+        }
+        return ticketsDto;
+    }
 
     public TicketDto toDto(Ticket ticket){
         return TicketDto.builder()

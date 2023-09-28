@@ -2,6 +2,7 @@ package gcs.projects.ticketmcs.controller;
 
 
 import gcs.projects.ticketmcs.dto.CreateTicketDto;
+import gcs.projects.ticketmcs.dto.TicketUpdateDto;
 import gcs.projects.ticketmcs.service.TicketService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,5 +24,10 @@ public class TicketController {
     @PostMapping()
     public ResponseEntity<?> createTickets(@RequestBody CreateTicketDto createTicketDto){
         return new ResponseEntity<>(ticketService.create(createTicketDto), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{eventCode}")
+    public ResponseEntity<?> update(@PathVariable ("eventCode") String eventCode, @RequestBody TicketUpdateDto ticketUpdateDto){
+        return ResponseEntity.ok(ticketService.updateTicket(eventCode, ticketUpdateDto));
     }
 }
