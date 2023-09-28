@@ -2,7 +2,7 @@
 
 ![Logo](https://www.moretimepa.co.uk/wp-content/uploads/shutterstock_378811030.jpg)
 
-Welcome to my events management backend app, this is an app with microservices architecture, with Spring Cloud Open Feign communication, Spring Cloud Netflix Eureka Server for service registry with load balancer, Spring Cloud Api Gateway, Spring Cloud Circuit Breaker pattern and Retry pattern!
+Welcome to my events management backend app, this is an app with microservices architecture, with Spring Cloud Open Feign communication (i tried other communications too like Rest Template (deprecated) and Web client (i let that commented) if you want to see), Spring Cloud Netflix Eureka Server for service registry with load balancer, Spring Cloud Api Gateway, Spring Cloud Circuit Breaker pattern and Retry pattern!
 This app allow to create an event, create tickets for that event, create a ticket hub and manage the ticket sells for users request.
 
 ## Architecture
