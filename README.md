@@ -47,6 +47,7 @@ docker run -d -p 3309:3306 --name events-mcs-db -v $(pwd)/eventsdata:/var/lib/my
 2- Now run your microservices
 
 2.1 - Run Service Registry first!
+
 2.2 - Run all other microservices
 
 ## App functionalitys
