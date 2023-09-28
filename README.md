@@ -27,28 +27,28 @@ Services used.
 
 1 - Run all this commands for build your docker containers and get all connections for any db
 
-1.1 - Docker container for Ticket Hub db
+ 1.1 - Docker container for Ticket Hub db
 ```shell script
 docker run -d -p 3307:3306 --name tickethub-mcs-db -v $(pwd)/tickethubsdata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=tickethubdb mysql:latest
 ```
-1.2 - Docker container for Tickets db
+ 1.2 - Docker container for Tickets db
 ```shell script
 docker run -d -p 3308:3306 --name tickets-mcs-db -v $(pwd)/ticketsdata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=ticketsdb mysql:latest
 ```
-1.3 - Docker container for Events db
+ 1.3 - Docker container for Events db
 ```shell script
 docker run -d -p 3309:3306 --name events-mcs-db -v $(pwd)/eventsdata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=eventsdb mysql:latest
 ```
-1.4 - Docker container for Users db
+ 1.4 - Docker container for Users db
 ```shell script
  docker run -d -p 3310:3306 --name users-mcs-db -v $(pwd)/usersdata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=usersdb mysql:latest
 ```
 
-2- Now run your microservices
+2 - Now run your microservices
 
-2.1 - Run Service Registry first!
+ 2.1 - Run Service Registry first!
 
-2.2 - Run all other microservices
+ 2.2 - Run all other microservices
 
 ## App functionalitys
 
