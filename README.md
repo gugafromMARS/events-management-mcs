@@ -60,7 +60,7 @@ In this app you have several options :
 
 * **Get**
 
-  Get the all events available, get event by id and get user by id.
+  Get all events available, get event by event code and get user by id.
 
 * **Buy**
   
