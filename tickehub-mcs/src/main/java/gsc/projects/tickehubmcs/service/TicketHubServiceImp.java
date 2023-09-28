@@ -21,7 +21,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class TicketHubServiceImp {
+public class TicketHubServiceImp implements TicketHubService {
 
 
     private TicketHubRepository ticketHubRepository;
@@ -37,18 +37,21 @@ public class TicketHubServiceImp {
     private UserTicketsConverter userTicketsConverter;
     private final UserTicketsRepository userTicketsRepository;
 
+    @Override
     public List<TicketHubDto> getAllTicketHubs() {
         return ticketHubRepository.findAll().stream()
                 .map(ticketHub -> ticketHubConverter.toDto(ticketHub))
                 .toList();
     }
 
+    @Override
     public TicketHubDto getById(Long ticketHubId) {
         return ticketHubRepository.findById(ticketHubId)
                 .map(ticketHub -> ticketHubConverter.toDto(ticketHub))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket Hub not found"));
     }
 
+    @Override
     public TicketHubDto create(TicketHubCreateDto ticketHubCreateDto) {
         TicketHub existingTicketHub = ticketHubRepository.findByEmail(ticketHubCreateDto.getEmail());
         if(existingTicketHub != null){
@@ -60,6 +63,7 @@ public class TicketHubServiceImp {
     }
 
 //    @CircuitBreaker(name = "${spring.application.name}", fallbackMethod = "getDefaultUserTickets")
+    @Override
     @Retry(name = "${spring.application.name}", fallbackMethod = "getDefaultUserTickets")
     public UserTicketsDto buyTicket(Long ticketHubId, String eventCode, Long userId) {
 
@@ -83,6 +87,7 @@ public class TicketHubServiceImp {
         return userTicketsConverter.toDto(userTickets);
     }
 
+    @Override
     public UserTicketsDto getDefaultUserTickets(Long ticketHubId, String eventCode, Long userId, Exception exception) {
 
         LOGGER.info("inside getDefaultUserTickets method");
@@ -101,5 +106,21 @@ public class TicketHubServiceImp {
 
         UserTickets userTickets = userTicketsConverter.fromTicketHubDtoTicketDtoUserDto(existingTicketHub, ticketDto, userDto);
         return userTicketsConverter.toDto(userTickets);
+    }
+
+    @Override
+    public void deleteTicketHub(Long ticketHubId) {
+        TicketHub ticketHub = ticketHubRepository.findById(ticketHubId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket Hub not found"));
+        ticketHubRepository.delete(ticketHub);
+    }
+
+    @Override
+    public TicketHubDto updateTicketHub(Long ticketHubId, TicketUpdateDto ticketUpdateDto) {
+        TicketHub existingTicketHub = ticketHubRepository.findById(ticketHubId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket Hub not found"));
+        existingTicketHub.setEmail(ticketUpdateDto.getEmail());
+        ticketHubRepository.save(existingTicketHub);
+        return ticketHubConverter.toDto(existingTicketHub);
     }
 }
