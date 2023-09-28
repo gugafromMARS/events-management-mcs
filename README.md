@@ -64,7 +64,15 @@ In this app you have several options :
 
 * **Buy**
   
-  User can buy ticket for a expecific event if still are tickets available for sale.
+  User can buy ticket for a specific event if still are tickets available for sale.
+
+* **Update**
+
+  Can update event local date, and the respective ticket local date too, update email on ticket hub and update user email too.
+
+* **Delete**
+
+  Can delete any event, ticket hub and user.
  
 ## Authors
 
