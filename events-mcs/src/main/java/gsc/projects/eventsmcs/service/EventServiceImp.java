@@ -4,6 +4,7 @@ package gsc.projects.eventsmcs.service;
 import gsc.projects.eventsmcs.converter.EventConverter;
 import gsc.projects.eventsmcs.dto.EventCreateDto;
 import gsc.projects.eventsmcs.dto.EventDto;
+import gsc.projects.eventsmcs.dto.EventUpdateDto;
 import gsc.projects.eventsmcs.model.Event;
 import gsc.projects.eventsmcs.repository.EventRepository;
 import lombok.AllArgsConstructor;
@@ -39,6 +40,7 @@ public class EventServiceImp implements EventService {
                 .toList();
     }
 
+    @Override
     public EventDto getByEventCode(String eventCode) {
 
         Event existingEvent = eventRepository.findByEventCode(eventCode);
@@ -46,5 +48,21 @@ public class EventServiceImp implements EventService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
         }
         return eventConverter.toDto(existingEvent);
+    }
+
+    @Override
+    public void deleteEvent(Long eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
+        eventRepository.delete(event);
+    }
+
+    @Override
+    public EventDto updateEvent(Long eventId, EventUpdateDto eventUpdateDto) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
+        event.setLocalDate(eventUpdateDto.getLocalDate());
+        eventRepository.save(event);
+        return eventConverter.toDto(event);
     }
 }
