@@ -1,10 +1,7 @@
 package gsc.projects.usersmcs.service;
 
 import gsc.projects.usersmcs.converter.UserConverter;
-import gsc.projects.usersmcs.dto.BuyTicketDto;
-import gsc.projects.usersmcs.dto.UserCreateDto;
-import gsc.projects.usersmcs.dto.UserDto;
-import gsc.projects.usersmcs.dto.UserTicketsDto;
+import gsc.projects.usersmcs.dto.*;
 import gsc.projects.usersmcs.model.User;
 import gsc.projects.usersmcs.repository.UserRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -30,12 +27,14 @@ public class UserServiceImp implements UserService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(UserServiceImp.class);
 
+    @Override
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(user -> userConverter.toDto(user))
                 .toList();
     }
 
+    @Override
     public UserDto getById(Long userId) {
         return userRepository.findById(userId).stream()
                 .map(user -> userConverter.toDto(user))
@@ -43,6 +42,7 @@ public class UserServiceImp implements UserService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
+    @Override
     public UserDto create(UserCreateDto userCreateDto){
         User existingUser = userRepository.findByEmail(userCreateDto.getEmail());
         if(existingUser != null){
@@ -54,6 +54,7 @@ public class UserServiceImp implements UserService {
     }
 
 
+    @Override
     @CircuitBreaker(name = "${spring.application.name}", fallbackMethod = "getDefaultUserTickets")
     public UserTicketsDto buyTicketByUserId(Long userId, BuyTicketDto buyTicketDto) {
 
@@ -65,6 +66,7 @@ public class UserServiceImp implements UserService {
         return userTicketsDto;
     }
 
+    @Override
     public UserTicketsDto getDefaultUserTickets(Long userId, BuyTicketDto buyTicketDto, Exception exception){
 
         LOGGER.info("inside getDefaultUserTickets method");
@@ -80,5 +82,21 @@ public class UserServiceImp implements UserService {
         userTicketsDto.setLocalDate(LocalDate.parse("2023-12-31"));
 
         return userTicketsDto;
+    }
+
+    @Override
+    public void deleteUserById(Long userId) {
+        User user = userRepository.findById(userId)
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found"));
+        userRepository.delete(user);
+    }
+
+    @Override
+    public UserDto updateUser(Long userId, UserUpdateDto userUpdateDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found"));
+        user.setEmail(userUpdateDto.getEmail());
+        userRepository.save(user);
+        return userConverter.toDto(user);
     }
 }
