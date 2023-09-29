@@ -35,7 +35,7 @@ public class UserController {
 
     @GetMapping("/{userId}/buyticket")
     public ResponseEntity<?> buyTicket(@PathVariable ("userId") Long userId,@RequestBody BuyTicketDto buyTicketDto){
-        return new ResponseEntity<>(userService.buyTicketByUserId(userId, buyTicketDto), HttpStatus.CREATED);
+        return ResponseEntity.ok(userService.buyTicketByUserId(userId, buyTicketDto));
     }
 
     @DeleteMapping("/{userId}")
