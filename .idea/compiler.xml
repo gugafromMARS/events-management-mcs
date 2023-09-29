@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="tickehub-mcs" />
+        <module name="ticket-mcs" />
+        <module name="api-gateway" />
+        <module name="events-mcs" />
+        <module name="users-mcs" />
+        <module name="service-registry-mcs" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="config-server" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="api-gateway" options="-parameters" />
+      <module name="config-server" options="-parameters" />
+      <module name="events-mcs" options="-parameters" />
+      <module name="service-registry-mcs" options="-parameters" />
+      <module name="tickehub-mcs" options="-parameters" />
+      <module name="ticket-mcs" options="-parameters" />
+      <module name="users-mcs" options="-parameters" />
+    </option>
+  </component>
+</project>
