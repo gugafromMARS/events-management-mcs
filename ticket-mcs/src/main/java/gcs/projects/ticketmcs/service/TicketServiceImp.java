@@ -99,8 +99,9 @@ public class TicketServiceImp implements TicketService {
     }
 
     @Override
-    public List<TicketDto> updateTicket(String eventCode, TicketUpdateDto ticketUpdateDto) {
-        List<Ticket> existingTickets = ticketRepository.findByEventCode(eventCode);
+    public List<TicketDto> updateTicket(TicketUpdateDto ticketUpdateDto) {
+
+        List<Ticket> existingTickets = ticketRepository.findByEventCode(ticketUpdateDto.getEventCode());
 
         if(existingTickets.size() == 0){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tickets for that event don't exist");

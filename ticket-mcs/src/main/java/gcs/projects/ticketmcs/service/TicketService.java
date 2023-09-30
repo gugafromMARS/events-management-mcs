@@ -16,5 +16,5 @@ public interface TicketService {
 
     List<TicketDto> getDefaultEvent(CreateTicketDto createTicketDto, Exception exception);
 
-    List<TicketDto> updateTicket(String eventCode, TicketUpdateDto ticketUpdateDto);
+    List<TicketDto> updateTicket(TicketUpdateDto ticketUpdateDto);
 }
