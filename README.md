@@ -73,6 +73,14 @@ In this app you have several options :
 * **Delete**
 
   Can delete any event, ticket hub and user.
+
+## Tests
+
+I made some integration tests and service unit tests for all microservices, using :
+
+* Mockito
+* Junit5
+  
  
 ## Authors
 
